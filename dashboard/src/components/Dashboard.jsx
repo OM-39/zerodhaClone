@@ -69,9 +69,9 @@ const Dashboard = () => {
     }
   };
 
-  if (loading) {
-    return <div className="loading-screen">Verifying access...</div>;
-  }
+  // if (loading) {
+  //   return <div className="loading-screen">Verifying access...</div>;
+  // }
   return (
     <div className="dashboard-container">
       <ToastContainer />
