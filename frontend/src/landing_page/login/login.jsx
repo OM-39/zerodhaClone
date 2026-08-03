@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { useCookies } from "react-cookie";
 
 import "./login.css";
 
@@ -11,7 +10,6 @@ const DASHBOARD_URL = "https://zerodhaclonedashboard-t0ag.onrender.com";
 
 
 function Login() {
-  const [cookies] = useCookies(["token"]);
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -19,10 +17,26 @@ function Login() {
   const { email, password } = inputValue;
 
   useEffect(() => {
-  if (cookies.token) {
-    window.location.href = "https://zerodhaclonedashboard-t0ag.onrender.com";
-  }
-}, [cookies.token]);
+  const verifyUser = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://zerodhaclonebackend-8dtk.onrender.com/",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (data.status) {
+        window.location.href = DASHBOARD_URL;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  verifyUser();
+}, []);
   
   const handleOnChange = (e) => {
     const { name, value } = e.target;

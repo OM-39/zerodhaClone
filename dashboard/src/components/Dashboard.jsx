@@ -3,7 +3,6 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { CookiesProvider } from "react-cookie";
 
 import Apps from "./Apps";
 import Funds from "./Funds";
@@ -15,52 +14,61 @@ import Summary from "./Summary";
 import WatchList from "./WatchList";
 import GeneralContextProvider from "./GeneralContextProvider";
 
-const FRONTEND_LOGIN_URL = "https://zerodhaclone-fqfx.onrender.com/login";
+const FRONTEND_LOGIN_URL =
+  "https://zerodhaclonelandingpage.onrender.com/login";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const [cookies, , removeCookie] = useCookies(["token"]);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const verifyCookie = async () => {
-      if (!cookies.token) {
-        window.location.href = FRONTEND_LOGIN_URL;
-        return;
-      }
-
       try {
-        const { data } = await axios.post(
-          "https://zerodhaclonebackend-8dtk.onrender.com",
-          {},
-          { withCredentials: true }
+        const { data } = await axios.get(
+          "https://zerodhaclonebackend-8dtk.onrender.com/verify",
+          {
+            withCredentials: true,
+          }
         );
 
         const { status, user } = data;
 
         if (status) {
           setUsername(user);
-          toast(`Hello ${user}`, { position: "top-right" });
+          toast(`Hello ${user}`, {
+            position: "top-right",
+          });
           setLoading(false);
         } else {
-          removeCookie("token", { path: "/" });
-          navigate("/login");
+          window.location.href = FRONTEND_LOGIN_URL;
         }
       } catch (error) {
-        console.error("Cookie verification failed:", error);
-        removeCookie("token", { path: "/" });
-        navigate("/login");
+        console.error(error);
+        window.location.href = FRONTEND_LOGIN_URL;
       }
     };
 
     verifyCookie();
-  }, [cookies.token, removeCookie]);
+  }, []);
 
-  const Logout = () => {
-    removeCookie("token", { path: "/" });
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "https://zerodhaclonebackend-8dtk.onrender.com/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      window.location.href =
+        "https://zerodhaclonelandingpage.onrender.com/login";
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   if (loading) {
     return <div className="loading-screen">Verifying access...</div>;
   }
@@ -72,7 +80,7 @@ const Dashboard = () => {
       </GeneralContextProvider>
       <div className="content">
         <Routes>
-          <Route exact path="/" element={<Summary username={username}/>} />
+          <Route exact path="/" element={<Summary username={username} />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/holdings" element={<Holdings />} />
           <Route path="/positions" element={<Positions />} />
@@ -80,8 +88,8 @@ const Dashboard = () => {
           <Route path="/apps" element={<Apps />} />
         </Routes>
         <div >
-        <button onClick={Logout} className="logout-btn" style={{ padding: "6px 12px", margin: "0px 10px", color: "#ffffff", backgroundColor: "#3551dc" }}>Logout</button>
-      </div>
+          <button onClick={handleLogout} className="logout-btn" style={{ padding: "6px 12px", margin: "0px 10px", color: "#ffffff", backgroundColor: "#3551dc" }}>Logout</button>
+        </div>
       </div>
     </div>
   );

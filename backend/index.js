@@ -49,7 +49,20 @@ app.post("/addOrder", async (req, res) => {
 
 app.post("/signup", Signup);
 app.post("/login", Login);
-app.post("/", userVerification);
+app.get("/verify", userVerification);
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+});
 
 app.listen(PORT, () => {
     console.log("App Started!");
