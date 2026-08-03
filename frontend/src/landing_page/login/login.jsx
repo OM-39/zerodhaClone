@@ -20,7 +20,7 @@ function Login() {
   const verifyUser = async () => {
     try {
       const { data } = await axios.post(
-        "https://zerodhaclonebackend-8dtk.onrender.com/",
+        "https://zerodhaclonebackend-8dtk.onrender.com/login",
         {},
         {
           withCredentials: true,
