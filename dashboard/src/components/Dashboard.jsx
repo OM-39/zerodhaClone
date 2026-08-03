@@ -41,11 +41,11 @@ const Dashboard = () => {
           });
           setLoading(false);
         } else {
-          window.location.href = FRONTEND_LOGIN_URL;
+          // window.location.href = FRONTEND_LOGIN_URL;
         }
       } catch (error) {
         console.error(error);
-        window.location.href = FRONTEND_LOGIN_URL;
+        // window.location.href = FRONTEND_LOGIN_URL;
       }
     };
 
