@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     allowedHosts: [
-      "zerodhaclonedashboard-hfxx.onrender.com"
+      "zerodhaclonedashboard-t0ag.onrender.com"
     ]
   },
 })

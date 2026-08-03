@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 import "./login.css";
 
-const DASHBOARD_URL = "https://zerodhaclonedashboard-hfxx.onrender.com/";
+const DASHBOARD_URL = "https://zerodhaclonedashboard-t0ag.onrender.com";
 
 
 
@@ -20,7 +20,7 @@ function Login() {
 
   useEffect(() => {
   if (cookies.token) {
-    window.location.href = "https://zerodhaclonedashboard-hfxx.onrender.com/";
+    window.location.href = "https://zerodhaclonedashboard-t0ag.onrender.com";
   }
 }, [cookies.token]);
   
