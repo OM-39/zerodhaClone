@@ -2,6 +2,14 @@ import UsersModel from "./model/UsersModel.js";
 import { createSecretToken } from "./SecretToken.js";
 import bcrypt from "bcrypt";
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "None",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: "/",
+};
+
 export const Signup = async (req, res) => {
   try {
     const { email, password, username, createdAt } = req.body;
@@ -24,12 +32,11 @@ export const Signup = async (req, res) => {
 
     const token = createSecretToken(user._id);
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    console.log("Signup Token:", token);
+
+    res.cookie("token", token, cookieOptions);
+
+    console.log("Signup Headers:", res.getHeaders());
 
     return res.status(201).json({
       success: true,
@@ -37,7 +44,8 @@ export const Signup = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Signup Error:", error);
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -76,19 +84,19 @@ export const Login = async (req, res) => {
 
     const token = createSecretToken(user._id);
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    console.log("Login Token:", token);
+
+    res.cookie("token", token, cookieOptions);
+
+    console.log("Login Headers:", res.getHeaders());
 
     return res.status(200).json({
       success: true,
       message: "User logged in successfully",
     });
   } catch (error) {
-    console.error(error);
+    console.error("Login Error:", error);
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
