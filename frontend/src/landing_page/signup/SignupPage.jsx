@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 import "./signup.css";
 
-const DASHBOARD_URL = "http://localhost:5175";
+const DASHBOARD_URL = "https://zerodhaclonedashboard-hfxx.onrender.com/";
 
 
 
@@ -22,7 +22,7 @@ function SignupPage() {
   
 useEffect(() => {
   if (cookies.token) {
-    window.location.href = "http://localhost:5175";
+    window.location.href = "https://zerodhaclonedashboard-hfxx.onrender.com/";
   }
 }, [cookies.token]);
 
@@ -47,7 +47,7 @@ useEffect(() => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/signup",
+        "https://zerodhaclonebackend-8dtk.onrender.com/signup",
         { ...inputValue },
         { withCredentials: true }
       );

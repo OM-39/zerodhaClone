@@ -15,7 +15,7 @@ import Summary from "./Summary";
 import WatchList from "./WatchList";
 import GeneralContextProvider from "./GeneralContextProvider";
 
-const FRONTEND_LOGIN_URL = "http://localhost:5174/login";
+const FRONTEND_LOGIN_URL = "https://zerodhaclone-fqfx.onrender.com/login";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Dashboard = () => {
 
       try {
         const { data } = await axios.post(
-          "http://localhost:3000",
+          "https://zerodhaclonebackend-8dtk.onrender.com",
           {},
           { withCredentials: true }
         );

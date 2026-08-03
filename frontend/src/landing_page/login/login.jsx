@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 import "./login.css";
 
-const DASHBOARD_URL = "http://localhost:5175";
+const DASHBOARD_URL = "https://zerodhaclonedashboard-hfxx.onrender.com/";
 
 
 
@@ -20,7 +20,7 @@ function Login() {
 
   useEffect(() => {
   if (cookies.token) {
-    window.location.href = "http://localhost:5175";
+    window.location.href = "https://zerodhaclonedashboard-hfxx.onrender.com/";
   }
 }, [cookies.token]);
   
@@ -45,7 +45,7 @@ function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/login",
+        "https://zerodhaclonebackend-8dtk.onrender.com/login",
         { ...inputValue },
         { withCredentials: true }
       );
