@@ -55,18 +55,16 @@ export const Signup = async (req, res) => {
 
 export const Login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    console.log("Login route hit");
 
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
+    const { email, password } = req.body;
+    console.log("Request body:", email);
 
     const user = await UsersModel.findOne({ email });
+    console.log("User:", user);
 
     if (!user) {
+      console.log("User not found");
       return res.status(401).json({
         success: false,
         message: "Incorrect email or password",
@@ -74,6 +72,7 @@ export const Login = async (req, res) => {
     }
 
     const auth = await bcrypt.compare(password, user.password);
+    console.log("Password match:", auth);
 
     if (!auth) {
       return res.status(401).json({
@@ -83,20 +82,25 @@ export const Login = async (req, res) => {
     }
 
     const token = createSecretToken(user._id);
+    console.log("Generated Token:", token);
 
-    console.log("Login Token:", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
 
-    res.cookie("token", token, cookieOptions);
-
-    console.log("Login Headers:", res.getHeaders());
+    console.log("Headers:", res.getHeaders());
 
     return res.status(200).json({
       success: true,
       message: "User logged in successfully",
     });
-  } catch (error) {
-    console.error("Login Error:", error);
 
+  } catch (err) {
+    console.error("Login Error:", err);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
